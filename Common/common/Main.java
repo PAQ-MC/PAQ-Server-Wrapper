@@ -8,6 +8,7 @@ import java.util.Date;
 
 import javax.swing.JOptionPane;
 
+import updateHandler.Check;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 
@@ -77,15 +78,14 @@ public class Main {
 					instanceName = "PAQ";
 				}
 				
-				
+				Check.start();
 				
 	}
 
 	/**
 	 * main print class for use with logger
 	 * 
-	 * @param msg
-	 *            the message you want printed
+	 * @param msg the message you want printed
 	 */
 	public static void print(String msg) {
 		System.out.println(msg);
