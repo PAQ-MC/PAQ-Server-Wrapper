@@ -18,7 +18,9 @@ import Json.version;
 public class Check implements Runnable {
 
 	// String repstation of the installed version number
-	private List<version> currentInstalledVersions;
+	private version currentInstalledVersions = new Json.version();
+	// time in minutes (60,000 * mins = milliseconds)
+	private static int mins;
 
 	/*
 	 * (non-Javadoc)
@@ -28,19 +30,20 @@ public class Check implements Runnable {
 	public void run() {
 
 		while (true) { // TODO: add better condition
-
 			try {
 				if (checkForUpdate()) {
 					Main.print("Pannic, Pannic, There is a update");
 				} else {
 					Main.print("all is good no update");
 				}
-				Thread.sleep(10000);
+				Thread.sleep((60000 * mins));
 			} catch (InterruptedException e) {
-				Main.print(e.getMessage());
+				Main.print("Error: " + e.getLocalizedMessage());
+				e.printStackTrace();
 				Main.exit(1);
 			} catch (Exception e) {
-				Main.print(e.getMessage());
+				Main.print("Error: " + e.getLocalizedMessage());
+				e.printStackTrace();
 				Main.exit(1);
 			}
 		}
@@ -50,7 +53,8 @@ public class Check implements Runnable {
 	/**
 	 * used for starting Check Thread
 	 */
-	public static void start() {
+	public static void start(int setMins) {
+		mins = setMins;
 		(new Thread(new Check())).start();
 	}
 
@@ -64,10 +68,13 @@ public class Check implements Runnable {
 
 		InstallInfo obj;
 		obj = GetInstallInfo.JsonInfo();
-		if (obj.version().toString() == currentInstalledVersions.toString()) {
+		System.out.println(obj.version().get(0).toString());
+		System.out.println(currentInstalledVersions.toString());
+		if (obj.version().get(0).toString()
+				.contentEquals(currentInstalledVersions.toString())) {
 			return false;
 		} else {
-			currentInstalledVersions = obj.version();
+			currentInstalledVersions = obj.version().get(0);
 			return true;
 		}
 

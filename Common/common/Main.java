@@ -78,7 +78,7 @@ public class Main {
 					instanceName = "PAQ";
 				}
 				
-				Check.start();
+				Check.start(1);
 				
 	}
 
